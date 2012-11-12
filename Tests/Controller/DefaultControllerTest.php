@@ -1,6 +1,6 @@
 <?php
 
-namespace Kaymorey\PortfolioBundle\Tests\Controller;
+namespace Kaymorey\PortfolioBackBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

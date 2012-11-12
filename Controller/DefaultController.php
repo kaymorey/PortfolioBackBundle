@@ -1,21 +1,19 @@
 <?php
 
-namespace Kaymorey\PortfolioBundle\Controller;
+namespace Kaymorey\PortfolioBackBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class DefaultController extends Controller
 {
-	/**
-     * @Route("/", name="portfolio_accueil")
+    /**
+     * @Route("/hello/{name}")
+     * @Template()
      */
-    public function indexAction()
+    public function indexAction($name)
     {
-        return $this->render('KaymoreyPortfolioBundle::index.html.twig');
+        return array('name' => $name);
     }
 }

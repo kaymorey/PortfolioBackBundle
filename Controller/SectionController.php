@@ -1,21 +1,19 @@
 <?php
 
-namespace Kaymorey\PortfolioBundle\Controller;
+namespace Kaymorey\PortfolioBackBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class SectionController extends Controller
 {
-	/**
-     * @Route("/test", name="portfolio_test")
+    /**
+     * @Route("/")
+     * @Template()
      */
-    public function testAction()
+    public function indexAction()
     {
-        return $this->render('KaymoreyPortfolioBundle::test.html.twig');
+        return $this->render('KaymoreyPortfolioBackBundle::index.html.twig');
     }
 }
