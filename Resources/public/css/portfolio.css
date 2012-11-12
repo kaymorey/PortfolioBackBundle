@@ -1,0 +1,266 @@
+/* Katia Moreira - Portfolio - created with LESS - LESS is MORE */
+/* ---- HEADER ---- */
+header {
+  background-color: #2688c5;
+  height: 52px;
+}
+#header {
+  margin-right: auto;
+  margin-left: auto;
+  width: 87%;
+}
+#header #menu {
+  font-family: 'Oswald', Arial, sans-serif;
+  padding-top: 15px;
+}
+#header #menu li {
+  font-family: 'Oswald', Arial, sans-serif;
+  text-transform: uppercase;
+  float: left;
+  margin-right: 7%;
+}
+#header #menu li a {
+  font-family: 'Oswald', Arial, sans-serif;
+  color: #FFF;
+}
+#header #menu li a:hover {
+  color: #393939;
+}
+#header #social {
+  position: absolute;
+  left: 80%;
+  top: 10px;
+}
+#header #social a {
+  width: 32px;
+  height: 32px;
+  display: block;
+  float: left;
+  margin-right: 10px;
+}
+#header #social .twitter {
+  background: url("/bundles/kaymoreyportfolio/images/social/twitter02_dark.png");
+}
+#header #social .twitter:hover {
+  background: url("/bundles/kaymoreyportfolio/images/social/twitter02_active.png");
+}
+#header #social .linkedin {
+  background: url("/bundles/kaymoreyportfolio/images/social/in_dark.png");
+}
+#header #social .linkedin:hover {
+  background: url("/bundles/kaymoreyportfolio/images/social/in_active.png");
+}
+#header #social .blog {
+  background: url("/bundles/kaymoreyportfolio/images/social/blog_dark.png");
+}
+#header #social .blog:hover {
+  background: url("/bundles/kaymoreyportfolio/images/social/blog_active.png");
+}
+/* ---- CONTENT ---- */
+#content {
+  width: 100%;
+  height: auto;
+  margin: auto;
+}
+/* ---- INDEX ---- */
+#home {
+  width: 90%;
+  margin: auto;
+  overflow: hidden;
+}
+#home #logo {
+  width: 330px;
+}
+#home #logo img {
+  max-width: 100%;
+}
+#home #logo #breakApartRounded {
+  position: absolute;
+  top: 0;
+  background-image: url('/bundles/kaymoreyportfolio/images/slider/circle.png'), url('/bundles/kaymoreyportfolio/images/slider/circle.png'), url('/bundles/kaymoreyportfolio/images/slider/circle.png'), url('/bundles/kaymoreyportfolio/images/slider/circle.png');
+  background-repeat: no-repeat;
+  /*Transition*/
+
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+  transition: all 1s ease;
+}
+#home #logo .circle {
+  height: 330px;
+  width: 330px;
+  background: transparent;
+  margin: 0 50px 50px 0;
+  /*Make it a circle*/
+
+  -webkit-border-radius: 165px;
+  -moz-border-radius: 165px;
+  border-radius: 165px;
+}
+#home #text {
+  padding-top: 10%;
+}
+#home #text h1 {
+  color: #2688c5;
+  font-family: 'Oswald', Arial, sans-serif;
+  font-size: 3.3125em;
+  /* 53px / 16px */
+
+  line-height: 64px;
+}
+#home #text h2 {
+  color: #2688c5;
+  font-family: 'Oswald', Arial, sans-serif;
+  font-size: 1.75em;
+  /* 28px / 16px */
+
+}
+#home #text .fb-like {
+  margin-top: 3px;
+  margin-bottom: 8px;
+}
+#home #text #paginator {
+  margin-top: 5px;
+}
+#home #text #paginator .page {
+  width: 10px;
+  height: 10px;
+  margin-right: 3px;
+  overflow: hidden;
+  float: left;
+  background: url("/bundles/kaymoreyportfolio/images/slider/paginator.png");
+  background-position: top left;
+  cursor: pointer;
+}
+#home #text #paginator .page.active {
+  background-position: bottom left;
+}
+/* ---- FOOTER ---- */
+footer {
+  clear: both;
+  width: 100%;
+  height: 185px;
+  line-height: 185px;
+  background-color: #e4e3e3;
+}
+footer #footer {
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+  position: relative;
+}
+footer #footer #left {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1.2;
+  width: 42%;
+}
+footer #footer #profile {
+  float: left;
+}
+footer #footer #profile-text {
+  font-family: Georgia, Arial, sans-serif;
+  color: #393939;
+  font-size: 0.8125em;
+  /* 13px / 16px */
+
+  padding-left: 95px;
+}
+footer #footer #profile-text .blue {
+  color: #2688c5;
+}
+footer #footer #twitter_update_list {
+  width: 40%;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1.2;
+  margin-left: 15%;
+  font-family: Georgia, Arial, sans-serif;
+  color: #393939;
+  font-size: 0.8125em;
+  /* 13px / 16px */
+}
+footer #footer #twitter_update_list #head {
+  margin-bottom: 12px;
+}
+footer #footer #twitter_update_list #head img {
+  float: left;
+  vertical-align: middle;
+}
+footer #footer #twitter_update_list #head .twitter-follow-button {
+  margin-top: 8px;
+  margin-left: 8px;
+}
+footer #footer #twitter_update_list #head a {
+  margin-left: 8px;
+  font-size: 1.230769230769231em;
+  /* 16px / 13px */
+
+  color: #2688c5;
+}
+footer #footer #twitter_update_list p {
+  padding-top: 8px;
+  padding-bottom: 10px;
+}
+footer #footer #twitter_update_list p.first {
+  border-bottom: dotted #2688c5 1px;
+}
+footer #footer #twitter_update_list p a {
+  font-size: 1em;
+  /* 13px / 13px */
+
+  color: #2688c5;
+}
+@media screen and (min-height: 610px) {
+  #home {
+    position: absolute;
+    top: 13.5%;
+    left: 15%;
+  }
+  footer {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+  }
+}
+@media screen and (min-width: 1100px) {
+  #home #text h1 {
+    font-size: 4.0625em;
+    /* 65px / 16px */
+  
+  }
+  #home #text h2 {
+    font-size: 2.1875em;
+    /* 35px / 16px */
+  
+  }
+}
+@media screen and (min-width: 915px) {
+  #header {
+    width: 67%;
+  }
+  #home {
+    width: 70%;
+  }
+  #footer {
+    width: 70%;
+  }
+}
+@media screen and (min-width: 840px) {
+  #header {
+    width: 77%;
+  }
+  #home {
+    width: 80%;
+  }
+  #footer {
+    width: 80%;
+  }
+}
+@media screen and (min-width: 770px) {
+  #logo {
+    float: left;
+    padding-right: 25px;
+  }
+}

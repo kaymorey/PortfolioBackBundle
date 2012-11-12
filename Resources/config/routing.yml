@@ -1,0 +1,4 @@
+_portfolio:
+    resource: "@KaymoreyPortfolioBundle/Controller"
+    type:     annotation
+
