@@ -1,0 +1,31 @@
+{% extends 'KaymoreyPortfolioBackBundle::layout.html.twig' %}
+{% block content %}
+<div class="row">
+	<div class="span12">
+		<h3>Catégories <small>LISTE DES CATEGORIES</small></h3>
+		<a class="btn btn-success" href="{# path('portfolioback_categories_add') #}"><i class="icon-plus-sign icon-white"></i> Ajouter une categorie</a>
+		<hr />
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Nom de la catégorie</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for categorie in categories %}
+				<tr>
+					<td>{{ categorie.titre }}</td>
+					<td></td>
+					<td>
+						<p>
+							<a class="btn btn-info" href="#"><i class="icon-pencil icon-white"></i> Modifier</a>
+							<a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Supprimer</a>
+						</p>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}

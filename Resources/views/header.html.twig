@@ -1,12 +1,18 @@
+{% set route =  app.request.attributes.get('_route') %}
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
-			<a class="brand" href="#">Backoffice - Katia Moreira</a>
+			<a class="brand" href="{{ path('portfolioback_index') }}">Backoffice - Katia Moreira</a>
 			<ul class="nav">
-				<li class="active"><a href="#">Home</a></li>
-				<li><a href="#">Projets pro</a></li>
-				<li><a href="#">Projets persos</a></li>
-				<li><a href="#">Projets étudiants</a></li>
+				<li{% if route == "portfolioback_index" %} class="active"{% endif %}>
+					<a href="{{ path('portfolioback_index') }}">Home</a>
+				</li>
+				<li>
+					<a href="{{ path('portfolioback_categories') }}">Catégories</a>
+				</li>
+				<li{% if route == "portfolioback_projets" %} class="active"{% endif %}>
+					<a href="{{ path('portfolioback_projets') }}">Projets</a>
+				</li>
 			</ul>
 		</div>
 	</div>

@@ -1,0 +1,33 @@
+{% extends 'KaymoreyPortfolioBackBundle::layout.html.twig' %}
+{% block content %}
+<div class="row">
+	<div class="span12">
+		<h3>Projets <small>LISTE DES PROJETS</small></h3>
+		<a class="btn btn-success" href="{{ path('portfolioback_projets_add') }}"><i class="icon-plus-sign icon-white"></i> Ajouter un projet</a>
+		<hr />
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Titre</th>
+					<th>Catégorie</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for projet in projets %}
+				<tr>
+					<td>{{ projet.title }}</td>
+					<td></td>
+					<td>
+						<p>
+							<a class="btn btn-info" href="#"><i class="icon-pencil icon-white"></i> Modifier</a>
+							<a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Supprimer</a>
+						</p>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+<?php
+
+namespace Kaymorey\PortfolioBackBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Kaymorey\PortfolioBundle\Entity\Doc
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Kaymorey\PortfolioBundle\Entity\DocRepository")
+ */
+class Doc
+{
+    /**
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Kaymorey\PortfolioBackBundle\Entity\Work")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $work;
+
+    /**
+     * @var string $path
+     *
+     * @ORM\Column(name="path", type="string", length=255)
+     */
+    private $path;
+
+    /**
+     * @var string $type
+     *
+     * @ORM\Column(name="type", type="string", length=255)
+     */
+    private $type;
+}
