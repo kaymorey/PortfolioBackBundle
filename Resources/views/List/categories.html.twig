@@ -3,7 +3,7 @@
 <div class="row">
 	<div class="span12">
 		<h3>Catégories <small>LISTE DES CATEGORIES</small></h3>
-		<a class="btn btn-success" href="{# path('portfolioback_categories_add') #}"><i class="icon-plus-sign icon-white"></i> Ajouter une categorie</a>
+		<a class="btn btn-success" href="{{ path('portfolioback_categories_add') }}"><i class="icon-plus-sign icon-white"></i> Ajouter une categorie</a>
 		<hr />
 		<table class="table table-striped">
 			<thead>
@@ -19,7 +19,7 @@
 					<td>
 						<p>
 							<a class="btn btn-info" href="#"><i class="icon-pencil icon-white"></i> Modifier</a>
-							<a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Supprimer</a>
+							<a class="btn btn-danger fancy-remove" href="#" data-id="{{ categorie.id }}"><i class="icon-remove icon-white"></i> Supprimer</a>
 						</p>
 					</td>
 				</tr>

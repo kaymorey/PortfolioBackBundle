@@ -3,13 +3,25 @@
 <head>
     <meta charset="utf-8" />
     <title>Backoffice - Katia Moreira - Portfolio</title>
-
-    <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>    
+   
+    <!-- JQuery -->
     <script type="text/javascript" src="{{ asset('bundles/kaymoreyportfolio/js/jquery-1.8.1.min.js') }}"></script>
+
+    <!-- Bootstrap -->
     <script type="text/javascript" src="{{ asset('bundles/kaymoreyportfolioback/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/kaymoreyportfolioback/js/portfolio-ck.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('bundles/kaymoreyportfolioback/bootstrap/css/bootstrap.min.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('bundles/kaymoreyportfolioback/bootstrap/css/bootstrap-responsive.min.css') }}" type="text/css" />
+
+    <!-- Fancybox -->
+    <script type="text/javascript" src="{{ asset('bundles/kaymoreyportfolioback/js/jquery.fancybox.pack.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('bundles/kaymoreyportfolioback/css/jquery.fancybox.css') }}" type="text/css" />
+
+    <!-- FOSJsRoutingBundle -->
+    <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+    <!-- Portfolio -->
+    <script type="text/javascript" src="{{ asset('bundles/kaymoreyportfolioback/js/portfolio-ck.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('bundles/kaymoreyportfolioback/css/portfolio-back.css') }}" type="text/css" />
 </head>
 
