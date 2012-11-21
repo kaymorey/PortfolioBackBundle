@@ -20,8 +20,15 @@ $(document).ready(function() {
 			$.fancybox.open({
 				href : Routing.generate("portfolioback_categories_remove", {"id" : id}),
 				type : "ajax",
-				closeBtn : false
+				closeBtn : false,
+				afterShow : function() {
+					$('.remove .btn-danger').click(function() {
+						$.fancybox.close();
+						return false;
+					});
+				}
 			});
+			return false;
 		});
 	});
 	/*$.fancybox.open({
@@ -37,5 +44,4 @@ $(document).ready(function() {
 			$('.registerNews .send').click(registerNewsletter);
 		}
 	});*/
-	return false;
 });

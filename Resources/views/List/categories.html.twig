@@ -5,6 +5,12 @@
 		<h3>Catégories <small>LISTE DES CATEGORIES</small></h3>
 		<a class="btn btn-success" href="{{ path('portfolioback_categories_add') }}"><i class="icon-plus-sign icon-white"></i> Ajouter une categorie</a>
 		<hr />
+		{% if action is not null and action == "remove" %}
+		    <div class="alert alert-success">
+		    	<button class="close" data-dismiss="alert" type="button">×</button>
+		    	La catégorie a bien été supprimée.
+    		</div>
+		{% endif %}
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -18,7 +24,7 @@
 					<td></td>
 					<td>
 						<p>
-							<a class="btn btn-info" href="#"><i class="icon-pencil icon-white"></i> Modifier</a>
+							<a class="btn btn-info" href="{{ path('portfolioback_categories_edit', {'id': categorie.id}) }}"><i class="icon-pencil icon-white"></i> Modifier</a>
 							<a class="btn btn-danger fancy-remove" href="#" data-id="{{ categorie.id }}"><i class="icon-remove icon-white"></i> Supprimer</a>
 						</p>
 					</td>

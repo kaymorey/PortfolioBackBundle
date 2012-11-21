@@ -20,14 +20,15 @@ class SectionController extends Controller
         return $this->render('KaymoreyPortfolioBackBundle::index.html.twig');
     }
      /**
-     * @Route("/categories", name="portfolioback_categories")
+     * @Route("/categories/{action}", name="portfolioback_categories", defaults={"action" = false})
      */
-    public function categoriesAction()
+    public function categoriesAction($action)
     {
         $repository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Category');
         $categories = $repository->findAll();
         return $this->render('KaymoreyPortfolioBackBundle:List:categories.html.twig', array(
-            "categories" => $categories
+            "categories" => $categories,
+            "action" => $action
         ));
     }
     /**
@@ -75,11 +76,9 @@ class SectionController extends Controller
             $em->remove($category);
             $em->flush();
 
-            $categories = $repository->findAll();
-
-            return $this->render('KaymoreyPortfolioBackBundle:List:categories.html.twig', array(
-                "categories" => $categories
-            ));
+            return $this->redirect($this->generateUrl('portfolioback_categories', array(
+                "action" => "remove"
+            )));
         }
         else {
             $repository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Work');
@@ -95,6 +94,38 @@ class SectionController extends Controller
         return $this->render('KaymoreyPortfolioBackBundle:Remove:categories.html.twig', array(
             "categorie" => $category,
             "canRemove" => $canRemove
+        ));
+    }
+    /**
+     * @Route("/categories/edit/{id}", name="portfolioback_categories_edit")
+     */
+    public function editCategoriesAction($id)
+    {
+        $repository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Category');
+        $category = $repository->findOneById($id);
+
+        $formBuilder = $this->createFormBuilder($category);
+
+        $formBuilder->add('Titre', 'text');
+        $form = $formBuilder->getForm();
+
+        $request = $this->get('request');
+
+        if( $request->getMethod() == 'POST' ) {
+            $form->bind($request);
+            if( $form->isValid() ) {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->flush();
+                return $this->forward('KaymoreyPortfolioBackBundle:Section:categories', array(
+                    "action" => "edit",
+                    "category" => $category
+                ));
+            }
+        }
+
+        return $this->render('KaymoreyPortfolioBackBundle:Edit:categories.html.twig', array(
+            "form" => $form->createView(),
+            "categorie" => $category
         ));
     }
      /**

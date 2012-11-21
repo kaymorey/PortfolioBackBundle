@@ -3,7 +3,7 @@
 		<h3 class="remove-confirm-title">Êtes-vous sur de vouloir supprimer la catégorie suivante ?</h3>
 		<p class="text-warning lead remove-category-title">{{ categorie.titre }}</p>
 		<a class="btn btn-info" href="{{ path('portfolioback_categories_remove', {'id' : categorie.id, 'action' : 'remove'}) }}"><i class="icon-ok icon-white"></i> Valider</a>
-		<a class="btn btn-danger" href="{{ path('portfolioback_categories') }}"><i class="icon-remove icon-white"></i> Annuler</a>
+		<a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Annuler</a>
 	</div>
 {% else %}
 	<div class="span5 div-center remove">
