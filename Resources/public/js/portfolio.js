@@ -31,17 +31,4 @@ $(document).ready(function() {
 			return false;
 		});
 	});
-	/*$.fancybox.open({
-		href : Routing.generate("ficep_newsletter"),
-		type : "ajax",
-		helpers: {
-			overlay : {
-				opacity : 0.4
-			}
-		},
-		closeBtn : false,
-		afterShow : function() {
-			$('.registerNews .send').click(registerNewsletter);
-		}
-	});*/
 });

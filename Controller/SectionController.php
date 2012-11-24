@@ -20,15 +20,18 @@ class SectionController extends Controller
         return $this->render('KaymoreyPortfolioBackBundle::index.html.twig');
     }
      /**
-     * @Route("/categories/{action}", name="portfolioback_categories", defaults={"action" = false})
+     * @Route("/categories", name="portfolioback_categories")
      */
-    public function categoriesAction($action)
+    public function categoriesAction()
     {
         $repository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Category');
         $categories = $repository->findAll();
+
+        $request = $this->get('request');
+        $referer = $request->headers->get("referer");
+
         return $this->render('KaymoreyPortfolioBackBundle:List:categories.html.twig', array(
-            "categories" => $categories,
-            "action" => $action
+            "categories" => $categories
         ));
     }
     /**
@@ -52,10 +55,7 @@ class SectionController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($category);
                 $em->flush();
-                return $this->redirect($this->generateUrl('portfolioback_categories', array(
-                    "add" => "true",
-                    "category" => $category
-                )));
+                return $this->redirect($this->generateUrl('portfolioback_categories'));
             }
         }
 
@@ -76,9 +76,7 @@ class SectionController extends Controller
             $em->remove($category);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('portfolioback_categories', array(
-                "action" => "remove"
-            )));
+            return $this->redirect($this->generateUrl('portfolioback_categories'));
         }
         else {
             $repository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Work');
@@ -116,10 +114,7 @@ class SectionController extends Controller
             if( $form->isValid() ) {
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->flush();
-                return $this->forward('KaymoreyPortfolioBackBundle:Section:categories', array(
-                    "action" => "edit",
-                    "category" => $category
-                ));
+                return $this->redirect($this->generateUrl('portfolioback_categories'));
             }
         }
 
@@ -137,6 +132,38 @@ class SectionController extends Controller
         $works = $repository->findAll();
         return $this->render('KaymoreyPortfolioBackBundle:List:projets.html.twig', array(
             "projets" => $works
+        ));
+    }
+    /**
+     * @Route("/projects/add", name="portfolioback_projects_add")
+     */
+    public function addProjects2Action()
+    {
+        $work = new Work();
+
+        $formBuilder = $this->createFormBuilder($work);
+
+        $formBuilder->add('Titre', 'text');
+        $form = $formBuilder->getForm();
+
+        $request = $this->get('request');
+
+        if( $request->getMethod() == 'POST' ) {
+            $form->bind($request);
+
+            if( $form->isValid() ) {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($category);
+                $em->flush();
+                return $this->redirect($this->generateUrl('portfolioback_categories', array(
+                    "add" => "true",
+                    "category" => $category
+                )));
+            }
+        }
+
+        return $this->render('KaymoreyPortfolioBackBundle:Add:categories.html.twig', array(
+            "form" => $form->createView()
         ));
     }
      /**
