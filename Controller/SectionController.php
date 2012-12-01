@@ -5,8 +5,13 @@ namespace Kaymorey\PortfolioBackBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 use Kaymorey\PortfolioBackBundle\Entity\Category;
+use Kaymorey\PortfolioBackBundle\Form\CategoryType;
+
+use Kaymorey\PortfolioBackBundle\Entity\Work;
+use Kaymorey\PortfolioBackBundle\Form\WorkType;
 
 
 class SectionController extends Controller
@@ -40,11 +45,7 @@ class SectionController extends Controller
     public function addCategoriesAction()
     {
         $category = new Category();
-
-        $formBuilder = $this->createFormBuilder($category);
-
-        $formBuilder->add('Titre', 'text');
-        $form = $formBuilder->getForm();
+        $form = $this->createForm(new CategoryType, $category);
 
         $request = $this->get('request');
 
@@ -102,10 +103,7 @@ class SectionController extends Controller
         $repository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Category');
         $category = $repository->findOneById($id);
 
-        $formBuilder = $this->createFormBuilder($category);
-
-        $formBuilder->add('Titre', 'text');
-        $form = $formBuilder->getForm();
+        $form = $this->createForm(new CategoryType, $category);
 
         $request = $this->get('request');
 
@@ -137,14 +135,10 @@ class SectionController extends Controller
     /**
      * @Route("/projects/add", name="portfolioback_projects_add")
      */
-    public function addProjects2Action()
+    public function addProjectsAction(Request $data)
     {
         $work = new Work();
-
-        $formBuilder = $this->createFormBuilder($work);
-
-        $formBuilder->add('Titre', 'text');
-        $form = $formBuilder->getForm();
+        $form = $this->createForm(new WorkType, $work);
 
         $request = $this->get('request');
 
@@ -153,28 +147,23 @@ class SectionController extends Controller
 
             if( $form->isValid() ) {
                 $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($category);
+
+                // Set image
+                $form['img']->getData()->move($dir, $someNewFilename);
+               
+                // Set date
+                $data = $data->request->get('kaymorey_portfoliobackbundle_worktype');
+                $date = new \DateTime('01/01/'.$data['date']);
+                $work->setDate($date);
+                
+                $em->persist($work);
                 $em->flush();
-                return $this->redirect($this->generateUrl('portfolioback_categories', array(
-                    "add" => "true",
-                    "category" => $category
-                )));
+                return $this->redirect($this->generateUrl('portfolioback_projets'));
             }
         }
 
-        return $this->render('KaymoreyPortfolioBackBundle:Add:categories.html.twig', array(
-            "form" => $form->createView()
-        ));
-    }
-     /**
-     * @Route("/projets/add", name="portfolioback_projets_add")
-     */
-     public function addProjetsAction()
-    {
-        $repository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Category');
-        $categories = $repository->findAll();
         return $this->render('KaymoreyPortfolioBackBundle:Add:projets.html.twig', array(
-            "categories" => $categories
+            "form" => $form->createView()
         ));
     }
 }

@@ -3,11 +3,12 @@
 <div class="row">
 	<div class="span12">
 		<h3>Projets <small>LISTE DES PROJETS</small></h3>
-		<a class="btn btn-success" href="{{ path('portfolioback_projets_add') }}"><i class="icon-plus-sign icon-white"></i> Ajouter un projet</a>
+		<a class="btn btn-success" href="{{ path('portfolioback_projects_add') }}"><i class="icon-plus-sign icon-white"></i> Ajouter un projet</a>
 		<hr />
 		<table class="table table-striped">
 			<thead>
 				<tr>
+					<th>Image d'aperçu</th>
 					<th>Titre</th>
 					<th>Catégorie</th>
 					<th></th>
@@ -17,7 +18,7 @@
 				{% for projet in projets %}
 				<tr>
 					<td>{{ projet.title }}</td>
-					<td></td>
+					<td>{{ projet.category.title }}</td>
 					<td>
 						<p>
 							<a class="btn btn-info" href="#"><i class="icon-pencil icon-white"></i> Modifier</a>

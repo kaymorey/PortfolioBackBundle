@@ -22,11 +22,11 @@ class Category
     private $id;
 
     /**
-     * @var string $titre
+     * @var string $title
      *
-     * @ORM\Column(name="titre", type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=255)
      */
-    private $titre;
+    private $title;
 
     /**
      * Get id
@@ -39,25 +39,25 @@ class Category
     }
 
     /**
-     * Set type
+     * Set title
      *
-     * @param string $titre
+     * @param string $title
      * @return Category
      */
-    public function setTitre($titre)
+    public function setTitle($title)
     {
-        $this->titre = $titre;
+        $this->title = $title;
     
         return $this;
     }
 
     /**
-     * Get type
+     * Get title
      *
      * @return string 
      */
-    public function getTitre()
+    public function getTitle()
     {
-        return $this->titre;
+        return $this->title;
     }
 }
