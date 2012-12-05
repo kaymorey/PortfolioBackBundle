@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Kaymorey\PortfolioBackBundle\Entity\Category;
 use Kaymorey\PortfolioBackBundle\Form\CategoryType;
@@ -13,8 +14,9 @@ use Kaymorey\PortfolioBackBundle\Form\CategoryType;
 use Kaymorey\PortfolioBackBundle\Entity\Work;
 use Kaymorey\PortfolioBackBundle\Form\WorkType;
 
+use Kaymorey\PortfolioBackBundle\Controller\Tools;
 
-class SectionController extends Controller
+class SectionController extends ToolsController
 {
     /**
      * @Route("/", name="portfolioback_index")
@@ -122,9 +124,9 @@ class SectionController extends Controller
         ));
     }
      /**
-     * @Route("/projets", name="portfolioback_projets")
+     * @Route("/projets", name="portfolioback_projects")
      */
-    public function projetsAction()
+    public function projectsAction()
     {
         $repository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Work');
         $works = $repository->findAll();
@@ -148,11 +150,23 @@ class SectionController extends Controller
             if( $form->isValid() ) {
                 $em = $this->getDoctrine()->getEntityManager();
 
+                $data = $data->request->get('kaymorey_portfoliobackbundle_worktype');
+
+                // Set slug
+                $slug = $this->slug($data['title']);
+                $work->setSlug($slug);
+
                 // Set image
-                $form['img']->getData()->move($dir, $someNewFilename);
+                $dir = 'Resources/public/src/'.$slug;
+                $file = $form['img']->getData();
+                $extension = $file->guessExtension();
+                if (!$extension) {
+                    $extension = 'bin';
+                }
+                $file->move($dir, $slug.'.'.$extension);
+                $work->setImg($slug.'.'.$extension);
                
                 // Set date
-                $data = $data->request->get('kaymorey_portfoliobackbundle_worktype');
                 $date = new \DateTime('01/01/'.$data['date']);
                 $work->setDate($date);
                 
@@ -164,6 +178,26 @@ class SectionController extends Controller
 
         return $this->render('KaymoreyPortfolioBackBundle:Add:projets.html.twig', array(
             "form" => $form->createView()
+        ));
+    }
+    /**
+     * @Route("/projets/remove/{id}/{action}", name="portfolioback_projects_remove", defaults={"action" = null}, options={"expose"=true})
+     */
+    public function removeProjectsAction($id, $action)
+    {
+        $repository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Work');
+        $work = $repository->findOneById($id);
+
+        if($action != null) {
+            // Penser à gérer les documents liés grâce à une relation cascade
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->remove($work);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('portfolioback_projects'));
+        }
+        return $this->render('KaymoreyPortfolioBackBundle:Remove:projets.html.twig', array(
+            "projet" => $work
         ));
     }
 }

@@ -17,8 +17,9 @@ $(document).ready(function() {
 
 		$(".fancy-remove").click(function() {
 			var id = $(this).attr("data-id");
+			var route = $(this).attr("href");
 			$.fancybox.open({
-				href : Routing.generate("portfolioback_categories_remove", {"id" : id}),
+				href : route,
 				type : "ajax",
 				closeBtn : false,
 				afterShow : function() {

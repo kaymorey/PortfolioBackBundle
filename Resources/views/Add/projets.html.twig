@@ -5,7 +5,7 @@
 		<h3>Projets <small>AJOUTER UN PROJET</small></h3>
 		<a class="btn btn-success" href="{{ path('portfolioback_projets') }}"><i class="icon-circle-arrow-left icon-white"></i> Retour aux projets</a>
 		<hr />
-		<form method="post" action="{{ path('portfolioback_projects_add') }} {{ form_enctype(form) }}">
+		<form method="post" action="{{ path('portfolioback_projects_add') }}" {{ form_enctype(form) }}>
 			{{ form_widget(form) }}
 			<input type="submit" class="btn btn-primary" value="Enregistrer" />
 		</form>

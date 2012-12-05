@@ -1,0 +1,7 @@
+<div class="span5 div-center remove">
+	<h3 class="remove-confirm-title">Êtes-vous sur de vouloir supprimer le projet suivant ?</h3>
+	<p class="text-warning lead remove-category-title">{{ projet.title }}</p>
+	<a class="btn btn-info" href="{{ path('portfolioback_projects_remove', {'id' : projet.id, 'action' : 'remove'}) }}"><i class="icon-ok icon-white"></i> Valider</a>
+	<a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Annuler</a>
+</div>
+

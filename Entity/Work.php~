@@ -5,10 +5,10 @@ namespace Kaymorey\PortfolioBackBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Kaymorey\PortfolioBundle\Entity\Work
+ * Kaymorey\PortfolioBackBundle\Entity\Work
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Kaymorey\PortfolioBundle\Entity\WorkRepository")
+ * @ORM\Entity(repositoryClass="Kaymorey\PortfolioBackBundle\Entity\WorkRepository")
  */
 class Work
 {
@@ -20,7 +20,7 @@ class Work
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
+    
     /**
      * @ORM\ManyToOne(targetEntity="Kaymorey\PortfolioBackBundle\Entity\Category")
      * @ORM\JoinColumn(nullable=false)
@@ -39,6 +39,15 @@ class Work
      *
      * @ORM\Column(name="url", type="string", length=255, nullable=true)
      */
+    
+    private $slug;
+
+    /**
+     * @var string $slug
+     *
+     * @ORM\Column(name="slug", type="string", length=255, nullable=false)
+     */
+
     private $url;
 
     /**
@@ -77,6 +86,29 @@ class Work
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set category
+     *
+     * @param Kaymorey\PortfolioBackBundle\Entity\Category $category
+     * @return Work
+     */
+    public function setCategory(\Kaymorey\PortfolioBackBundle\Entity\Category $category)
+    {
+        $this->category = $category;
+    
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return Kaymorey\PortfolioBackBundle\Entity\Category 
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 
     /**

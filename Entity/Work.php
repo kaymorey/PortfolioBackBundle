@@ -39,7 +39,16 @@ class Work
      *
      * @ORM\Column(name="url", type="string", length=255, nullable=true)
      */
+    
     private $url;
+
+    /**
+     * @var string $slug
+     *
+     * @ORM\Column(name="slug", type="string", length=255, nullable=false)
+     */
+
+    private $slug;
 
     /**
      * @var string $img
@@ -238,5 +247,28 @@ class Work
     public function getSkills()
     {
         return $this->skills;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Work
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }
