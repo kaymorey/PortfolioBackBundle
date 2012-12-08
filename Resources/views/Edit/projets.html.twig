@@ -2,10 +2,10 @@
 {% block content %}
 <div class="row">
 	<div class="span12">
-		<h3>Catégories <small>MODIFIER UNE CATEGORIE</small></h3>
-		<a class="btn btn-success" href="{{ path('portfolioback_categories') }}"><i class="icon-circle-arrow-left icon-white"></i> Retour aux catégories</a>
+		<h3>Catégories <small>MODIFIER UN PROJET</small></h3>
+		<a class="btn btn-success" href="{{ path('portfolioback_projects') }}"><i class="icon-circle-arrow-left icon-white"></i> Retour aux catégories</a>
 		<hr />
-		<form method="post" action="{{ path('portfolioback_categories_edit', {'id' : projet.id}) }}">
+		<form method="post" action="{{ path('portfolioback_projects_edit', {'id' : projet.id}) }}">
 			{{ form_widget(form) }}
 			<input type="submit" class="btn btn-primary" value="Enregistrer" />
 		</form>
