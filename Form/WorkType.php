@@ -12,13 +12,21 @@ class WorkType extends AbstractType
     {
         $builder
             ->add('title', 'text')
-            ->add('url', 'url')
-            ->add('img', 'file')
-            ->add('date', 'choice', array(
+            ->add('url', 'url', array(
+                'required' => false
+            ))
+            ->add('img', 'file', array(
+                'required' => false
+            ))
+            ->add('year', 'choice', array(
                 'choices' => $this->buildYearChoices()
             ))
-            ->add('description', 'textarea')
-            ->add('skills', 'text')
+            ->add('description', 'textarea', array(
+                'required' => false
+            ))
+            ->add('skills', 'text', array(
+                'required' => false
+            ))
             ->add('category', 'entity', array(
                 'class' => 'KaymoreyPortfolioBackBundle:Category',
                 'property' => 'title'

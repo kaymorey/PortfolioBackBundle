@@ -1,0 +1,14 @@
+{% extends 'KaymoreyPortfolioBackBundle::layout.html.twig' %}
+{% block content %}
+<div class="row">
+	<div class="span12">
+		<h3>Catégories <small>MODIFIER UNE CATEGORIE</small></h3>
+		<a class="btn btn-success" href="{{ path('portfolioback_categories') }}"><i class="icon-circle-arrow-left icon-white"></i> Retour aux catégories</a>
+		<hr />
+		<form method="post" action="{{ path('portfolioback_categories_edit', {'id' : projet.id}) }}">
+			{{ form_widget(form) }}
+			<input type="submit" class="btn btn-primary" value="Enregistrer" />
+		</form>
+	</div>
+</div>
+{% endblock %}

@@ -67,6 +67,32 @@ class SectionController extends ToolsController
         ));
     }
     /**
+     * @Route("/categories/edit/{id}", name="portfolioback_categories_edit")
+     */
+    public function editCategoriesAction($id)
+    {
+        $repository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Category');
+        $category = $repository->findOneById($id);
+
+        $form = $this->createForm(new CategoryType, $category);
+
+        $request = $this->get('request');
+
+        if( $request->getMethod() == 'POST' ) {
+            $form->bind($request);
+            if( $form->isValid() ) {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->flush();
+                return $this->redirect($this->generateUrl('portfolioback_categories'));
+            }
+        }
+
+        return $this->render('KaymoreyPortfolioBackBundle:Edit:categories.html.twig', array(
+            "form" => $form->createView(),
+            "categorie" => $category
+        ));
+    }
+    /**
      * @Route("/categories/remove/{id}/{action}", name="portfolioback_categories_remove", defaults={"action" = null}, options={"expose"=true})
      */
     public function removeCategoriesAction($id, $action)
@@ -95,32 +121,6 @@ class SectionController extends ToolsController
         return $this->render('KaymoreyPortfolioBackBundle:Remove:categories.html.twig', array(
             "categorie" => $category,
             "canRemove" => $canRemove
-        ));
-    }
-    /**
-     * @Route("/categories/edit/{id}", name="portfolioback_categories_edit")
-     */
-    public function editCategoriesAction($id)
-    {
-        $repository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Category');
-        $category = $repository->findOneById($id);
-
-        $form = $this->createForm(new CategoryType, $category);
-
-        $request = $this->get('request');
-
-        if( $request->getMethod() == 'POST' ) {
-            $form->bind($request);
-            if( $form->isValid() ) {
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->flush();
-                return $this->redirect($this->generateUrl('portfolioback_categories'));
-            }
-        }
-
-        return $this->render('KaymoreyPortfolioBackBundle:Edit:categories.html.twig', array(
-            "form" => $form->createView(),
-            "categorie" => $category
         ));
     }
      /**
@@ -159,25 +159,49 @@ class SectionController extends ToolsController
                 // Set image
                 $dir = 'Resources/public/src/'.$slug;
                 $file = $form['img']->getData();
-                $extension = $file->guessExtension();
-                if (!$extension) {
-                    $extension = 'bin';
+                if($file != NULL) {
+                    $extension = $file->guessExtension();
+                    if (!$extension) {
+                        $extension = 'bin';
+                    }
+                    $file->move($dir, $slug.'.'.$extension);
+                    $work->setImg($slug.'.'.$extension);
                 }
-                $file->move($dir, $slug.'.'.$extension);
-                $work->setImg($slug.'.'.$extension);
-               
-                // Set date
-                $date = new \DateTime('01/01/'.$data['date']);
-                $work->setDate($date);
                 
                 $em->persist($work);
                 $em->flush();
-                return $this->redirect($this->generateUrl('portfolioback_projets'));
+                return $this->redirect($this->generateUrl('portfolioback_projects'));
             }
         }
 
         return $this->render('KaymoreyPortfolioBackBundle:Add:projets.html.twig', array(
             "form" => $form->createView()
+        ));
+    }
+    /**
+     * @Route("/projets/edit/{id}", name="portfolioback_projects_edit")
+     */
+    public function editProjectsAction($id)
+    {
+        $repository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Work');
+        $work = $repository->findOneById($id);
+
+        $form = $this->createForm(new WorkType, $work);
+
+        $request = $this->get('request');
+
+        if( $request->getMethod() == 'POST' ) {
+            $form->bind($request);
+            if( $form->isValid() ) {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->flush();
+                return $this->redirect($this->generateUrl('portfolioback_projects'));
+            }
+        }
+
+        return $this->render('KaymoreyPortfolioBackBundle:Edit:projets.html.twig', array(
+            "form" => $form->createView(),
+            "projet" => $work
         ));
     }
     /**

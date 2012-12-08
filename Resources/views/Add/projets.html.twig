@@ -3,7 +3,7 @@
 <div class="row">
 	<div class="span12">
 		<h3>Projets <small>AJOUTER UN PROJET</small></h3>
-		<a class="btn btn-success" href="{{ path('portfolioback_projets') }}"><i class="icon-circle-arrow-left icon-white"></i> Retour aux projets</a>
+		<a class="btn btn-success" href="{{ path('portfolioback_projects') }}"><i class="icon-circle-arrow-left icon-white"></i> Retour aux projets</a>
 		<hr />
 		<form method="post" action="{{ path('portfolioback_projects_add') }}" {{ form_enctype(form) }}>
 			{{ form_widget(form) }}

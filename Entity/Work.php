@@ -3,6 +3,7 @@
 namespace Kaymorey\PortfolioBackBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Kaymorey\PortfolioBackBundle\Entity\Work
@@ -36,8 +37,8 @@ class Work
 
     /**
      * @var string $url
-     *
      * @ORM\Column(name="url", type="string", length=255, nullable=true)
+     * @Assert\Url()
      */
     
     private $url;
@@ -58,11 +59,11 @@ class Work
     private $img;
 
     /**
-     * @var \DateTime $date
+     * @var integer $year
      *
-     * @ORM\Column(name="date", type="date", nullable=true)
+     * @ORM\Column(name="year", type="integer", nullable=true)
      */
-    private $date;
+    private $year;
 
     /**
      * @var string $description
@@ -181,26 +182,26 @@ class Work
     }
 
     /**
-     * Set date
+     * Set year
      *
-     * @param \DateTime $date
+     * @param integer $year
      * @return Work
      */
-    public function setDate($date)
+    public function setYear($year)
     {
-        $this->date = $date;
+        $this->year = $year;
     
         return $this;
     }
 
     /**
-     * Get date
+     * Get year
      *
-     * @return \DateTime 
+     * @return integer 
      */
-    public function getDate()
+    public function getYear()
     {
-        return $this->date;
+        return $this->year;
     }
 
     /**
