@@ -188,6 +188,10 @@ class SectionController extends WebController
         if( $request->getMethod() == 'POST' ) {
             $form->bind($request);
             if( $form->isValid() ) {
+                // Set modifiedAt
+                $now = new \DateTime();
+                $work->setModifiedAt($now);
+
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->flush();
                 return $this->redirect($this->generateUrl('portfolioback_projects'));

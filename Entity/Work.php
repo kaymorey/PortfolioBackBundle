@@ -77,6 +77,13 @@ class Work
      */
     private $published_at;
 
+     /**
+     * @var datetime $modified_at
+     *
+     * @ORM\Column(name="modified_at", type="datetime", nullable=false)
+     */
+    private $modified_at;
+
     /**
      * @var string $description
      *
@@ -98,6 +105,9 @@ class Work
     public function preUpload()
     {
         if (null !== $this->file) {
+            if($this->img != null) {
+                unlink($this->getAbsolutePath());
+            }
             $this->img = $this->slug.'.'.$this->file->guessExtension();
         }
     }
@@ -382,5 +392,28 @@ class Work
     public function getPublishedAt()
     {
         return $this->published_at;
+    }
+
+    /**
+     * Set modified_at
+     *
+     * @param \DateTime $modifiedAt
+     * @return Work
+     */
+    public function setModifiedAt($modifiedAt)
+    {
+        $this->modified_at = $modifiedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get modified_at
+     *
+     * @return \DateTime 
+     */
+    public function getModifiedAt()
+    {
+        return $this->modified_at;
     }
 }
