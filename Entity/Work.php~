@@ -3,6 +3,7 @@
 namespace Kaymorey\PortfolioBackBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Kaymorey\PortfolioBackBundle\Entity\Work
@@ -36,19 +37,17 @@ class Work
 
     /**
      * @var string $url
-     *
      * @ORM\Column(name="url", type="string", length=255, nullable=true)
+     * @Assert\Url()
      */
-    
-    private $slug;
+    private $url;
 
     /**
      * @var string $slug
      *
      * @ORM\Column(name="slug", type="string", length=255, nullable=false)
      */
-
-    private $url;
+    private $slug;
 
     /**
      * @var string $img
@@ -58,11 +57,18 @@ class Work
     private $img;
 
     /**
-     * @var \DateTime $date
+     * @var integer $year
      *
-     * @ORM\Column(name="date", type="date", nullable=true)
+     * @ORM\Column(name="year", type="integer", nullable=true)
      */
-    private $date;
+    private $year;
+
+    /**
+     * @var datetime $published_at
+     *
+     * @ORM\Column(name="published_at", type="datetime", nullable=false)
+     */
+    private $published_at;
 
     /**
      * @var string $description
@@ -180,27 +186,55 @@ class Work
         return $this->img;
     }
 
+    public function getAbsolutePath()
+    {
+        return null === $this->img
+            ? null
+            : $this->getUploadRootDir().'/'.$this->img;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->img
+            ? null
+            : $this->getUploadDir().'/'.$this->img;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads/documents';
+    }
+
     /**
-     * Set date
+     * Set year
      *
-     * @param \DateTime $date
+     * @param integer $year
      * @return Work
      */
-    public function setDate($date)
+    public function setYear($year)
     {
-        $this->date = $date;
+        $this->year = $year;
     
         return $this;
     }
 
     /**
-     * Get date
+     * Get year
      *
-     * @return \DateTime 
+     * @return integer 
      */
-    public function getDate()
+    public function getYear()
     {
-        return $this->date;
+        return $this->year;
     }
 
     /**
@@ -247,5 +281,28 @@ class Work
     public function getSkills()
     {
         return $this->skills;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Work
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

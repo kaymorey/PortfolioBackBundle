@@ -4,6 +4,26 @@
 	<div class="span12">
 		<h1>Hello Katia !</h1>
 		<h2>Ceci est ton backoffice créé en Symfony 2 !</h2>
+		<hr />
+		<h4>Derniers projets ajoutés</h4>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<td>Titre</td>
+					<td>Catégorie</td>
+					<td>Date d'ajout</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for projet in projets %}
+				<tr>
+					<td>{{ projet.title }}</td>
+					<td>{{ projet.category.title }}</td>
+					<td>{{ projet.publishedAt | date('d/m/Y, H:i') }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</div>
 </div>
 {% endblock %}

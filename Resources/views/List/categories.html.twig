@@ -19,7 +19,7 @@
 					<td>
 						<p>
 							<a class="btn btn-info" href="{{ path('portfolioback_categories_edit', {'id': categorie.id}) }}"><i class="icon-pencil icon-white"></i> Modifier</a>
-							<a class="btn btn-danger fancy-remove" href="{{ path('portfolioback_categories_remove') }}" data-id="{{ categorie.id }}"><i class="icon-remove icon-white"></i> Supprimer</a>
+							<a class="btn btn-danger fancy-remove" href="{{ path('portfolioback_categories_remove', {'id' : categorie.id}) }}" data-id="{{ categorie.id }}"><i class="icon-remove icon-white"></i> Supprimer</a>
 						</p>
 					</td>
 				</tr>

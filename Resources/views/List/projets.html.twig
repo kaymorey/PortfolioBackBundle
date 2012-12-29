@@ -17,13 +17,13 @@
 			<tbody>
 				{% for projet in projets %}
 				<tr>
-					<td></td>
+					<td class="img"><img src="{{ asset('uploads/works/'~projet.img) }}" alt="{{ projet.title }}" /></td>
 					<td>{{ projet.title }}</td>
 					<td>{{ projet.category.title }}</td>
 					<td>
 						<p>
 							<a class="btn btn-info" href="{{ path('portfolioback_projects_edit', {'id' : projet.id}) }}"><i class="icon-pencil icon-white"></i> Modifier</a>
-							<a class="btn btn-danger fancy-remove" href="{{ path('portfolioback_projects_remove', {'id' : projet.id} )}}" data-id="{{ projet.id }}"><i class="icon-remove icon-white"></i> Supprimer</a>
+							<a class="btn btn-danger fancy-remove" href="{{ path('portfolioback_projects_remove', {'id' : projet.id} ) }}" data-id="{{ projet.id }}"><i class="icon-remove icon-white"></i> Supprimer</a>
 						</p>
 					</td>
 				</tr>

@@ -15,7 +15,7 @@ class WorkType extends AbstractType
             ->add('url', 'url', array(
                 'required' => false
             ))
-            ->add('img', 'file', array(
+            ->add('file', 'file', array(
                 'required' => false
             ))
             ->add('year', 'choice', array(

@@ -16,7 +16,7 @@ use Kaymorey\PortfolioBackBundle\Form\WorkType;
 
 use Kaymorey\PortfolioBackBundle\Controller\Tools;
 
-class SectionController extends ToolsController
+class SectionController extends WebController
 {
     /**
      * @Route("/", name="portfolioback_index")
@@ -24,7 +24,10 @@ class SectionController extends ToolsController
      */
     public function indexAction()
     {
-        return $this->render('KaymoreyPortfolioBackBundle::index.html.twig');
+        $last_works = $this->getLastWorks(3, 0);
+        return $this->render('KaymoreyPortfolioBackBundle::index.html.twig', array(
+            "projets" => $last_works
+        ));
     }
      /**
      * @Route("/categories", name="portfolioback_categories")
@@ -152,21 +155,13 @@ class SectionController extends ToolsController
 
                 $data = $data->request->get('kaymorey_portfoliobackbundle_worktype');
 
+                // Set publishedAt
+                $now = new \DateTime();
+                $work->setPublishedAt($now);
+                
                 // Set slug
                 $slug = $this->slug($data['title']);
                 $work->setSlug($slug);
-
-                // Set image
-                $dir = 'Resources/public/src/'.$slug;
-                $file = $form['img']->getData();
-                if($file != NULL) {
-                    $extension = $file->guessExtension();
-                    if (!$extension) {
-                        $extension = 'bin';
-                    }
-                    $file->move($dir, $slug.'.'.$extension);
-                    $work->setImg($slug.'.'.$extension);
-                }
                 
                 $em->persist($work);
                 $em->flush();

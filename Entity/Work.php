@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Kaymorey\PortfolioBackBundle\Entity\WorkRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Work
 {
@@ -40,7 +41,6 @@ class Work
      * @ORM\Column(name="url", type="string", length=255, nullable=true)
      * @Assert\Url()
      */
-    
     private $url;
 
     /**
@@ -48,7 +48,6 @@ class Work
      *
      * @ORM\Column(name="slug", type="string", length=255, nullable=false)
      */
-
     private $slug;
 
     /**
@@ -57,6 +56,12 @@ class Work
      * @ORM\Column(name="img", type="string", length=255, nullable=true)
      */
     private $img;
+    private $filenameForRemove;
+
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    public $file;
 
     /**
      * @var integer $year
@@ -64,6 +69,13 @@ class Work
      * @ORM\Column(name="year", type="integer", nullable=true)
      */
     private $year;
+
+    /**
+     * @var datetime $published_at
+     *
+     * @ORM\Column(name="published_at", type="datetime", nullable=false)
+     */
+    private $published_at;
 
     /**
      * @var string $description
@@ -78,6 +90,54 @@ class Work
      * @ORM\Column(name="skills", type="string", length=255, nullable=true)
      */
     private $skills;
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->file) {
+            $this->img = $this->slug.'.'.$this->file->guessExtension();
+        }
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
+
+        $this->file->move(
+            $this->getUploadRootDir(),
+            $this->img
+        );
+
+        unset($this->file);
+    }
+
+    /**
+     * @ORM\PreRemove()
+     */
+    public function storeFilenameForRemove()
+    {
+        $this->filenameForRemove = $this->getAbsolutePath();
+    }
+
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        if ($this->filenameForRemove) {
+            unlink($this->filenameForRemove);
+        }
+    }
 
     /**
      * Get id
@@ -98,7 +158,7 @@ class Work
     public function setCategory(\Kaymorey\PortfolioBackBundle\Entity\Category $category)
     {
         $this->category = $category;
-    
+
         return $this;
     }
 
@@ -121,7 +181,7 @@ class Work
     public function setTitle($title)
     {
         $this->title = $title;
-    
+
         return $this;
     }
 
@@ -144,7 +204,7 @@ class Work
     public function setUrl($url)
     {
         $this->url = $url;
-    
+
         return $this;
     }
 
@@ -167,7 +227,7 @@ class Work
     public function setImg($img)
     {
         $this->img = $img;
-    
+
         return $this;
     }
 
@@ -181,6 +241,34 @@ class Work
         return $this->img;
     }
 
+    public function getAbsolutePath()
+    {
+        return null === $this->img
+            ? null
+            : $this->getUploadRootDir().'/'.$this->img;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->img
+        ? null
+        : $this->getUploadDir().'/'.$this->img;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads/works';
+    }
+
     /**
      * Set year
      *
@@ -190,7 +278,7 @@ class Work
     public function setYear($year)
     {
         $this->year = $year;
-    
+
         return $this;
     }
 
@@ -213,7 +301,7 @@ class Work
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
@@ -236,7 +324,7 @@ class Work
     public function setSkills($skills)
     {
         $this->skills = $skills;
-    
+
         return $this;
     }
 
@@ -259,7 +347,7 @@ class Work
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
+
         return $this;
     }
 
@@ -271,5 +359,28 @@ class Work
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Set published_at
+     *
+     * @param \DateTime $publishedAt
+     * @return Work
+     */
+    public function setPublishedAt($publishedAt)
+    {
+        $this->published_at = $publishedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get published_at
+     *
+     * @return \DateTime 
+     */
+    public function getPublishedAt()
+    {
+        return $this->published_at;
     }
 }
