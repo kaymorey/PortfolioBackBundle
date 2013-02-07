@@ -11,15 +11,23 @@
 					<th>Image d'aperçu</th>
 					<th>Titre</th>
 					<th>Catégorie</th>
-					<th></th>
+					<th>Documents</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for projet in projets %}
+				{% set i = 0 %}
+				{% for doc in docs %}
+					{% if doc.work.id == projet.id %}
+					{% set i = i+1 %}
+					{% endif %}
+				{% endfor %}
 				<tr>
 					<td class="img"><img src="{{ asset('uploads/works/'~projet.img) }}" alt="{{ projet.title }}" /></td>
 					<td>{{ projet.title }}</td>
 					<td>{{ projet.category.title }}</td>
+					<td><span class="badge badge-info">{{ i }}</span><a class="btn btn-link" href="{{ path('portfolioback_projects_docs', {'id' : projet.id}) }}">Voir</a></td>
 					<td>
 						<p>
 							<a class="btn btn-info" href="{{ path('portfolioback_projects_edit', {'id' : projet.id}) }}"><i class="icon-pencil icon-white"></i> Modifier</a>

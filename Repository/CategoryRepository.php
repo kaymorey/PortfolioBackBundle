@@ -1,6 +1,6 @@
 <?php
 
-namespace Kaymorey\PortfolioBackBundle\Entity;
+namespace Kaymorey\PortfolioBackBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

@@ -3,12 +3,14 @@
 namespace Kaymorey\PortfolioBackBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Kaymorey\PortfolioBackBundle\Entity\Doc
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Kaymorey\PortfolioBackBundle\Entity\DocRepository")
+ * @ORM\Entity(repositoryClass="Kaymorey\PortfolioBackBundle\Repository\DocRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Doc
 {
@@ -22,7 +24,7 @@ class Doc
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Kaymorey\PortfolioBackBundle\Entity\Work")
+     * @ORM\ManyToOne(targetEntity="Kaymorey\PortfolioBackBundle\Entity\Work", inversedBy="docs")
      * @ORM\JoinColumn(nullable=false)
      */
     private $work;
@@ -33,6 +35,12 @@ class Doc
      * @ORM\Column(name="path", type="string", length=255)
      */
     private $path;
+    private $filenameForRemove;
+
+     /**
+     * @Assert\File(maxSize="6000000")
+     */
+    public $file;
 
     /**
      * @var string $type
@@ -40,6 +48,81 @@ class Doc
      * @ORM\Column(name="type", type="string", length=255)
      */
     private $type;
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->file) {
+            if($this->path != null) {
+                unlink($this->getAbsolutePath());
+            }
+            $this->path = uniqid().'.'.$this->file->guessExtension();
+        }
+    }
+     /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
+
+        $this->file->move(
+            $this->getUploadRootDir(),
+            $this->path
+        );
+
+        unset($this->file);
+    }
+    /**
+     * @ORM\PreRemove()
+     * @ORM\PostLoad()
+     */
+    public function storeFilenameForRemove()
+    {
+        $this->filenameForRemove = $this->getAbsolutePath();
+    }
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        if ($this->filenameForRemove) {
+            unlink($this->filenameForRemove);
+        }
+    }
+
+    public function getAbsolutePath()
+    {
+        return null === $this->path
+            ? null
+            : $this->getUploadRootDir().'/'.$this->path;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->path
+        ? null
+        : $this->getUploadDir().'/'.$this->path;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads/docs/'.$this->work->getSlug();
+    }
 
     /**
      * Get id

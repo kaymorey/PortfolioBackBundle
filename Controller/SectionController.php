@@ -14,6 +14,9 @@ use Kaymorey\PortfolioBackBundle\Form\CategoryType;
 use Kaymorey\PortfolioBackBundle\Entity\Work;
 use Kaymorey\PortfolioBackBundle\Form\WorkType;
 
+use Kaymorey\PortfolioBackBundle\Entity\Doc;
+use Kaymorey\PortfolioBackBundle\Form\DocType;
+
 use Kaymorey\PortfolioBackBundle\Controller\Tools;
 
 class SectionController extends WebController
@@ -29,6 +32,7 @@ class SectionController extends WebController
             "projets" => $last_works
         ));
     }
+
      /**
      * @Route("/categories", name="portfolioback_categories")
      */
@@ -131,10 +135,15 @@ class SectionController extends WebController
      */
     public function projectsAction()
     {
-        $repository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Work');
-        $works = $repository->findAll();
+        $workRepository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Work');
+        $works = $workRepository->findAll();
+
+        $docRepository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Doc');
+        $docs = $docRepository->findAll();
+
         return $this->render('KaymoreyPortfolioBackBundle:List:projets.html.twig', array(
-            "projets" => $works
+            "projets" => $works,
+            "docs" => $docs
         ));
     }
     /**
@@ -147,10 +156,10 @@ class SectionController extends WebController
 
         $request = $this->get('request');
 
-        if( $request->getMethod() == 'POST' ) {
+        if($request->getMethod() == 'POST') {
             $form->bind($request);
 
-            if( $form->isValid() ) {
+            if($form->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
 
                 $data = $data->request->get('kaymorey_portfoliobackbundle_worktype');
@@ -158,6 +167,9 @@ class SectionController extends WebController
                 // Set publishedAt
                 $now = new \DateTime();
                 $work->setPublishedAt($now);
+
+                // set modifiedAt
+                $work->setModifiedAt($now);
                 
                 // Set slug
                 $slug = $this->slug($data['title']);
@@ -222,5 +234,69 @@ class SectionController extends WebController
         return $this->render('KaymoreyPortfolioBackBundle:Remove:projets.html.twig', array(
             "projet" => $work
         ));
+    }
+
+    /**
+     * @Route("/projets/documents/{id}", name="portfolioback_projects_docs")
+     */
+    public function editDocsProjectsAction($id)
+    {
+        $form = $this->createForm(new DocType);
+
+        $repository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Work');
+        $work = $repository->findOneById($id);
+        $docs = $work->getDocs();
+
+        return $this->render('KaymoreyPortfolioBackBundle:List:docs.html.twig', array(
+            "form" => $form->createView(),
+            "docs" => $docs,
+            "projet" => $work
+        ));
+    }
+    /**
+     * @Route("/projets/documents/{id}/add", name="portfolioback_projects_docs_add")
+     */
+    public function addDocsProjectsAction(Request $request, $id)
+    {
+        $doc = new Doc();
+        $repository = $this->getDoctrine()->getManager()->getRepository('KaymoreyPortfolioBackBundle:Work');
+        $work = $repository->findOneById($id);
+
+        $form = $this->createForm(new DocType, $doc);
+        $form->bind($request);
+
+        if($form->isValid()) {
+            $em = $this->getDoctrine()->getEntityManager();
+            
+            $work->addDoc($doc);
+
+            $em->persist($doc);
+            $em->flush();
+        }
+
+        return $this->redirect($this->generateUrl('portfolioback_projects_docs', array(
+            "id" => $id
+        )));
+    }
+     /**
+     * @Route("/projets/documents/{workId}/remove/{id}", name="portfolioback_projects_docs_remove")
+     */
+    public function removeDocsProjectsAction(Request $request, $id, $workId)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $doc = $em->getRepository('KaymoreyPortfolioBackBundle:Doc')
+            ->findOneById($id);
+
+        $work = $em->getRepository('KaymoreyPortfolioBackBundle:Work')
+            ->findOneById($workId);
+
+        $work->removeDoc($doc);
+
+        $em->remove($doc);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('portfolioback_projects_docs', array(
+            "id" => $workId
+        )));
     }
 }

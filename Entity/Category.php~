@@ -5,10 +5,10 @@ namespace Kaymorey\PortfolioBackBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Kaymorey\PortfolioBundle\Entity\Category
+ * Kaymorey\PortfolioBackBundle\Entity\Category
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Kaymorey\PortfolioBundle\Entity\CategoryRepository")
+ * @ORM\Entity(repositoryClass="Kaymorey\PortfolioBackBundle\Entity\CategoryRepository")
  */
 class Category
 {
@@ -22,9 +22,42 @@ class Category
     private $id;
 
     /**
-     * @var string $type
+     * @var string $title
      *
-     * @ORM\Column(name="type", type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=255)
      */
-    private $type;
+    private $title;
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return Category
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string 
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 }

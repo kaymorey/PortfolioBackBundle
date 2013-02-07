@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Kaymorey\PortfolioBackBundle\Entity\Work
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Kaymorey\PortfolioBackBundle\Entity\WorkRepository")
+ * @ORM\Entity(repositoryClass="Kaymorey\PortfolioBackBundle\Repository\WorkRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class Work
@@ -22,6 +22,11 @@ class Work
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Kaymorey\PortfolioBackBundle\Entity\Doc", mappedBy="work")
+     */
+    private $docs;
     
     /**
      * @ORM\ManyToOne(targetEntity="Kaymorey\PortfolioBackBundle\Entity\Category")
@@ -105,6 +110,9 @@ class Work
     public function preUpload()
     {
         if (null !== $this->file) {
+            if($this->img != null) {
+                unlink($this->getAbsolutePath());
+            }
             $this->img = $this->slug.'.'.$this->file->guessExtension();
         }
     }
@@ -389,5 +397,28 @@ class Work
     public function getPublishedAt()
     {
         return $this->published_at;
+    }
+
+    /**
+     * Set modified_at
+     *
+     * @param \DateTime $modifiedAt
+     * @return Work
+     */
+    public function setModifiedAt($modifiedAt)
+    {
+        $this->modified_at = $modifiedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get modified_at
+     *
+     * @return \DateTime 
+     */
+    public function getModifiedAt()
+    {
+        return $this->modified_at;
     }
 }

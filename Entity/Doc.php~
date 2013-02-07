@@ -3,12 +3,14 @@
 namespace Kaymorey\PortfolioBackBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Kaymorey\PortfolioBundle\Entity\Doc
+ * Kaymorey\PortfolioBackBundle\Entity\Doc
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Kaymorey\PortfolioBundle\Entity\DocRepository")
+ * @ORM\Entity(repositoryClass="Kaymorey\PortfolioBackBundle\Repository\DocRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Doc
 {
@@ -22,17 +24,17 @@ class Doc
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Kaymorey\PortfolioBackBundle\Entity\Work")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $work;
-
-    /**
      * @var string $path
      *
      * @ORM\Column(name="path", type="string", length=255)
      */
     private $path;
+    private $filenameForRemove;
+
+     /**
+     * @Assert\File(maxSize="6000000")
+     */
+    public $file;
 
     /**
      * @var string $type
@@ -40,4 +42,188 @@ class Doc
      * @ORM\Column(name="type", type="string", length=255)
      */
     private $type;
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->file) {
+            if($this->path != null) {
+                unlink($this->getAbsolutePath());
+            }
+            $this->path = uniqid().'.'.$this->file->guessExtension();
+        }
+    }
+     /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
+
+        $this->file->move(
+            $this->getUploadRootDir(),
+            $this->path
+        );
+
+        unset($this->file);
+    }
+    /**
+     * @ORM\PreRemove()
+     * @ORM\PostLoad()
+     */
+    public function storeFilenameForRemove()
+    {
+        $this->filenameForRemove = $this->getAbsolutePath();
+    }
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        if ($this->filenameForRemove) {
+            unlink($this->filenameForRemove);
+        }
+    }
+
+    public function getAbsolutePath()
+    {
+        return null === $this->path
+            ? null
+            : $this->getUploadRootDir().'/'.$this->path;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->path
+        ? null
+        : $this->getUploadDir().'/'.$this->path;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads/docs/'.$this->work->getSlug();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set work
+     *
+     * @param Kaymorey\PortfolioBackBundle\Entity\Work $work
+     * @return Doc
+     */
+    public function setWork(\Kaymorey\PortfolioBackBundle\Entity\Work $work)
+    {
+        $this->work = $work;
+    
+        return $this;
+    }
+
+    /**
+     * Get work
+     *
+     * @return Kaymorey\PortfolioBackBundle\Entity\Work 
+     */
+    public function getWork()
+    {
+        return $this->work;
+    }
+
+    /**
+     * Set path
+     *
+     * @param string $path
+     * @return Doc
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+    
+        return $this;
+    }
+
+    /**
+     * Get path
+     *
+     * @return string 
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return Doc
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->work = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add work
+     *
+     * @param \Kaymorey\PortfolioBackBundle\Entity\Work $work
+     * @return Doc
+     */
+    public function addWork(\Kaymorey\PortfolioBackBundle\Entity\Work $work)
+    {
+        $this->work[] = $work;
+    
+        return $this;
+    }
+
+    /**
+     * Remove work
+     *
+     * @param \Kaymorey\PortfolioBackBundle\Entity\Work $work
+     */
+    public function removeWork(\Kaymorey\PortfolioBackBundle\Entity\Work $work)
+    {
+        $this->work->removeElement($work);
+    }
 }

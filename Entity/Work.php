@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Kaymorey\PortfolioBackBundle\Entity\Work
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Kaymorey\PortfolioBackBundle\Entity\WorkRepository")
+ * @ORM\Entity(repositoryClass="Kaymorey\PortfolioBackBundle\Repository\WorkRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class Work
@@ -22,6 +22,11 @@ class Work
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Kaymorey\PortfolioBackBundle\Entity\Doc", mappedBy="work")
+     */
+    private $docs;
     
     /**
      * @ORM\ManyToOne(targetEntity="Kaymorey\PortfolioBackBundle\Entity\Category")
@@ -415,5 +420,45 @@ class Work
     public function getModifiedAt()
     {
         return $this->modified_at;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->docs = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add docs
+     *
+     * @param \Kaymorey\PortfolioBackBundle\Entity\Doc $docs
+     * @return Work
+     */
+    public function addDoc(\Kaymorey\PortfolioBackBundle\Entity\Doc $doc)
+    {
+        $this->docs[] = $doc;
+        $doc->setWork($this);
+        return $this;
+    }
+
+    /**
+     * Remove docs
+     *
+     * @param \Kaymorey\PortfolioBackBundle\Entity\Doc $docs
+     */
+    public function removeDoc(\Kaymorey\PortfolioBackBundle\Entity\Doc $doc)
+    {
+        $this->docs->removeElement($doc);
+    }
+
+    /**
+     * Get docs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDocs()
+    {
+        return $this->docs;
     }
 }

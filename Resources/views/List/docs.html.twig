@@ -1,0 +1,23 @@
+{% extends 'KaymoreyPortfolioBackBundle::layout.html.twig' %}
+{% block content %}
+<div class="row">
+	<div class="span12">
+		<h3>Documents <small>MODIFIER LES DOCUMENTS</small></h3>
+		<a class="btn btn-success" href="{{ path('portfolioback_projects') }}"><i class="icon-circle-arrow-left icon-white"></i> Retour aux projets</a>
+		<hr />
+		{% if docs is empty %}
+			Auncu document lié pour l'instant.
+		{% else %}
+			{% for doc in docs %}
+			<img src="{{ asset('uploads/docs/'~projet.slug~'/'~doc.path) | apply_filter('docBackThumbnail') }}" alt="{{ projet.title }}" />
+			<a href="{{ path('portfolioback_projects_docs_remove', {'id' : doc.id, 'workId' : projet.id}) }}"><i class="icon-remove docs"></i></a>
+			{% endfor %}
+		{% endif %}
+		<h5>Ajouter un document</h5>
+		<form method="post" action="{{ path('portfolioback_projects_docs_add', {'id' : projet.id}) }}" {{ form_enctype(form) }}>
+			{{ form_widget(form) }}
+			<br /><input type="submit" class="btn btn-primary" value="Enregistrer" />
+		</form>
+	</div>
+</div>
+{% endblock %}
