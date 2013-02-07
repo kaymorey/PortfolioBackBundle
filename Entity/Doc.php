@@ -50,6 +50,13 @@ class Doc
     private $type;
 
     /**
+     * @var string $description
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
      * @ORM\PrePersist()
      */
     public function preUpload()
@@ -201,5 +208,28 @@ class Doc
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Doc
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

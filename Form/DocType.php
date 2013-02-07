@@ -15,6 +15,9 @@ class DocType extends AbstractType
             ->add('file', 'file', array(
                 'required' => true
             ))
+            ->add('description', 'textarea', array(
+                'required' => false
+            ))
         ;
     }
     public function setDefaultOptions(OptionsResolverInterface $resolver)

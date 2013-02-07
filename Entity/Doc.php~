@@ -24,6 +24,12 @@ class Doc
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Kaymorey\PortfolioBackBundle\Entity\Work", inversedBy="docs")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $work;
+
+    /**
      * @var string $path
      *
      * @ORM\Column(name="path", type="string", length=255)
@@ -42,6 +48,13 @@ class Doc
      * @ORM\Column(name="type", type="string", length=255)
      */
     private $type;
+
+    /**
+     * @var string $description
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
 
     /**
      * @ORM\PrePersist()
@@ -195,35 +208,5 @@ class Doc
     public function getType()
     {
         return $this->type;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->work = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
-    /**
-     * Add work
-     *
-     * @param \Kaymorey\PortfolioBackBundle\Entity\Work $work
-     * @return Doc
-     */
-    public function addWork(\Kaymorey\PortfolioBackBundle\Entity\Work $work)
-    {
-        $this->work[] = $work;
-    
-        return $this;
-    }
-
-    /**
-     * Remove work
-     *
-     * @param \Kaymorey\PortfolioBackBundle\Entity\Work $work
-     */
-    public function removeWork(\Kaymorey\PortfolioBackBundle\Entity\Work $work)
-    {
-        $this->work->removeElement($work);
     }
 }
